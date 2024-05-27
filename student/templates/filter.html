@@ -1,0 +1,102 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Analysis Input</title>
+</head>
+<body>
+    <h1>Subject Analysis Input</h1>
+    <form action='/filter/' method="post" onsubmit="return showSelectedValues()">
+        {% csrf_token %}
+
+
+
+        <label for="start_row">Enter the minimum batch of that subjects:</label>
+        <input type="number" id="min_student" name="start_row"><br>
+
+
+
+
+
+
+
+        <button type="submit">Analyze</button>
+    </form>
+
+    <div id="selectedValues"></div>
+
+    {% if df_result %}
+    <h2>DataFrame Result:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for column in df_result.columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in df_result.values %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<!-- Display Result Dictionary (result_dict_result) -->
+{% if result_dict_result %}
+    <h2>Result Dictionary Result:</h2>
+    <ul>
+        {% for key, value in result_dict_result.items %}
+            <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+    <script>
+        function showSelectedValues() {
+            var filePath = document.getElementById('file').value;
+            var startRow = document.getElementById('start_row').value;
+            var endRow = document.getElementById('end_row').value;
+            var startColumn = document.getElementById('start_column').value;
+            var endColumn = document.getElementById('end_column').value;
+
+            var displayText = "Selected values:<br>" +
+                              "File Path: " + filePath + "<br>" +
+                              "Starting Row: " + startRow + "<br>" +
+                              "Ending Row: " + endRow + "<br>" +
+                              "Starting Column: " + startColumn + "<br>" +
+                              "Ending Column: " + endColumn;
+
+            document.getElementById('selectedValues').innerHTML = displayText;
+
+            // Prevent the form from submitting for demonstration purposes
+            return false;
+        }
+    </script>
+</body>
+</html>
+# def filter_subjects_view(request):
+#     # Retrieve data from the session
+#     df_result = request.session.get('df_result', [])
+#     result_dict_result = request.session.get('result_dict_result', {})
+#     min_student = request.session.get('min_student', 0)
+#     # Ensure that the data is available
+#     if not df_result or not result_dict_result:
+#         return HttpResponse("Data not found in the session.")
+
+#     # Call the filter_subjects function with the resulting DataFrame and result dictionary
+#     data1 = filter_subjects(df_result, result_dict_result,min_student)
+
+#     # Pass the results to the template
+#     context = {
+#         'df_result': df_result,
+#         'result_dict_result': result_dict_result,
+#         'data1': data1,
+#     }
+#     return render(request, 'filter.html', context) {% endcomment %}

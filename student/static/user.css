@@ -1,0 +1,125 @@
+:root {
+    --primary-color-light:white;
+    --secondary-color-light: #5e5d5d;
+}
+.dark-mode{
+    --primary-color-dark:  #5e5d5d;
+    --secondary-color-dark: white;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: var(--primary-color-light);
+    color: var(--secondary-color-light);
+    transition: background-color 6s ease, color 6s ease;
+}
+
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #558f58;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    color: black;
+    background-color: rgb(238, 229, 229);
+}
+
+p {
+    color: #333;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    padding: 5px;
+}
+
+body.dark-mode {
+    background-color: var(--primary-color-dark);
+    color: var(--secondary-color-dark);
+}
+
+body.dark-mode h1 {
+    color: var(--secondary-color-dark);
+}
+
+body.dark-mode input[type="file"],
+body.dark-mode label {
+    color: var(--secondary-color-dark);
+}
+
+@media only screen and (max-width: 700px) {
+    body {
+        margin: 10px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"] {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    table {
+        overflow-x: auto;
+    }
+}

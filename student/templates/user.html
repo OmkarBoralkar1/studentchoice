@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'user.css' %}">
+    <title>Subject Analysis Input</title>
+    <script>
+        function confirmSave() {
+            return confirm("Are you sure you want to save the data?");
+        }
+
+        function toggleMode() 
+        {
+            var body = document.body;
+            body.classList.toggle('dark-mode');
+            updateButtonLabel();
+
+            // Store the current mode in localStorage
+            var isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        function updateButtonLabel() 
+        {
+            var body = document.body;
+            var isDarkMode = body.classList.contains('dark-mode');
+            var toggleButton = document.getElementById('toggleButton');
+
+            toggleButton.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        }
+        // Check the stored mode on page load
+        window.onload = function () 
+        {
+            var body = document.body;
+            var storedDarkMode = localStorage.getItem('darkMode');
+
+            if (storedDarkMode === 'true') {
+                body.classList.add('dark-mode');
+                toggleButton.textContent ='Light Mode'
+            }
+        }
+    </script>
+</head>
+<body class="light-mode">
+    <div>
+        <button id="toggleButton" onclick="toggleMode()">Dark Mode</button>
+    </div>
+<h1>Elective Analysis Input</h1>
+<form action="{% url 'analyze_subject' %}" method="POST" enctype="multipart/form-data" >
+
+    {% csrf_token %}
+
+    <label for="filename">Select a file:</label>
+    <input type="file" id="filename" name="filename" required><br>
+
+    <label for="start_row">"Enter the start row (number-2) (e.g., 2 for starting from row 0):</label>
+    <input type="number" id="start_row" name="start_row" required><br>
+
+    <label for="end_row">Enter the ending row:</label>
+    <input type="number" id="end_row" name="end_row" required><br>
+
+    <label for="start_column">Enter the start column (start from 0):</label>
+    <input type="number" id="start_column" name="start_column" required><br>
+
+    <label for="end_column">Enter the end column e.g., 8 for ending at column 7 (if count starting from 1):</label>
+    <input type="number" id="end_column" name="end_column" required><br>
+
+    <label for="start_row">Enter the minimum batch of that subjects:</label>
+    <input type="number" id="min_student" name="min_student" required><br>
+    <button type="submit">Analyze</button>
+</form>
+
+{% if data1.empty %}
+    <p>No data available</p>
+{% else %}
+    <h2>Student allotment list</h2>
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Assigned Subject</th>
+            <th>Chosen Choice</th>
+            <th>Number of Students</th>
+            <th>Email</th>
+        </tr>
+        {% for record in data1 %}
+        <tr>
+            <td>{{ record.student_names }}</td>
+            <td>{{ record.Assigned_Subject }}</td>
+            <td>{{ record.Chosen_Choice }}</td>
+            <td>{{ record.Number_of_Students }}</td>
+            <td>{{ record.Email }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Add form to input file name only if data is available -->
+    <form action="{% url 'save_data' %}" method="POST" onsubmit="return confirmSave()">
+        {% csrf_token %}
+
+        <!-- Input for entering file name -->
+        <label for="file_name">Enter file name:</label>
+        <input type="text" id="file_name_save" name="file_name_save" required>
+        
+        
+        <!-- Submit button -->
+        <button type="submit">Save Data</button>
+    </form>
+    {% if status_message %}
+        <p>{{ status_message }}</p>
+    {% endif %}
+{% endif %}
+</body>
+</html>
